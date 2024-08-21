@@ -3,6 +3,14 @@ import Link from "next/link";
 
 import { signIn, signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import MainPage from "./layout/main-page";
+import { Button } from "./ui/button";
+import { ModeToggle } from "./toggle-theme-button";
+import { cn } from "@/lib/utils";
+import Logo from "./logo";
+import { LogInIcon, LogOutIcon, UserCircleIcon } from "lucide-react";
+import Image from "next/image";
+import { GithubImg } from "./github-img";
 
 const paths = [
   {
@@ -26,48 +34,76 @@ const paths = [
     href: "/apiFromServer",
   },
 ];
-const ACTIVE_ROUTE = "py-2 px-1 text-gray-300 transition-all underline";
+const ACTIVE_ROUTE = "py-2 px-1 text-primary  transition-all";
 const INACTIVE_ROUTE =
-  "py-2 px-1 text-gray-500  hover:text-gray-300 transition-all";
+  "py-2 px-1 text-accent-foreground/50 hover:text-accent-foreground font-medium transition-all ";
 
 const AuthButton = () => {
   const { data: session } = useSession();
-
+  const onAuthButtonClick = () => (session ? signOut() : signIn());
   return (
-    <div className="border-b w-full shadow-sm border-white">
-      {session && (
-        <div className="flex justify-between items-center">
-          user: {session.user?.name} <br />
-          <button onClick={() => signOut()}>Sign Out</button>
-        </div>
-      )}
-      {!session && (
-        <div className="flex justify-between items-center">
-          Not signed in <br />
-          <button onClick={() => signIn()}>Sign In</button>
-        </div>
-      )}
-    </div>
+    <Button
+      onClick={() => onAuthButtonClick()}
+      variant={session ? "link" : "default"}
+      className={cn("flex gap-3 items-center", !session && "flex-row-reverse")}
+    >
+      <p>{session ? "Sign Out" : "Sign In"}</p>
+      {session ? <LogOutIcon size={14} /> : <LogInIcon size={14} />}
+    </Button>
   );
 };
 
 const NavMenu = () => {
+  const { data: session } = useSession();
   const pathname = usePathname();
 
   return (
-    <div>
-      <AuthButton />
-      <ul className="flex w-full gap-4 bg-gray-700 px-4 items-center">
-        {paths.map((path, idx) => (
-          <Link key={idx} href={path.href}>
-            <li
-              className={pathname === path.href ? ACTIVE_ROUTE : INACTIVE_ROUTE}
-            >
-              {path.label}
-            </li>
-          </Link>
-        ))}
-      </ul>
+    <div className="max-w-screen border-b border-muted shadow-md">
+      <MainPage>
+        <nav className="md:h-24 mx-auto flex items-center justify-between">
+          <div className=" md:hover:scale-105  transition-all hover:cursor-pointer">
+            <Link href={"/"} className="drop-shadow-md">
+              <Logo />
+            </Link>
+          </div>
+          <ul className="flex items-center space-x-4">
+            {paths.map((path, idx) => (
+              <Link
+                key={idx}
+                href={path.href}
+                className="group/link flex flex-col items-center"
+              >
+                <li
+                  className={cn(
+                    "capitalize ",
+                    pathname === path.href ? ACTIVE_ROUTE : INACTIVE_ROUTE
+                  )}
+                >
+                  {path.label}
+                  <div
+                    className={cn(
+                      "w-0 bg-accent-foreground h-px  transition-all duration-250",
+                      pathname === path.href && "w-full bg-primary h-[1.5px]",
+                      pathname !== path.href && "group-hover/link:w-2/3"
+                    )}
+                  />
+                </li>
+              </Link>
+            ))}
+          </ul>
+          <div className="flex items-center space-x-4">
+            <ModeToggle />
+            {session && (
+              <GithubImg
+                src={session.user?.image ?? ""}
+                userName={session.user?.name ?? ""}
+                email={session.user?.email ?? ""}
+              />
+            )}
+            <AuthButton />
+          </div>
+        </nav>
+      </MainPage>
     </div>
   );
 };
