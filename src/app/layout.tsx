@@ -41,7 +41,7 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             <NavMenu />
-            <MainPage>{children}</MainPage>
+            <MainPage className="pt-20">{children}</MainPage>
           </ThemeProvider>
         </SessionProvider>
       </body>

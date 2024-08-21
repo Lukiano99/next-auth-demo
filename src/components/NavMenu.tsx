@@ -44,7 +44,7 @@ const AuthButton = () => {
   return (
     <Button
       onClick={() => onAuthButtonClick()}
-      variant={session ? "link" : "default"}
+      variant={session ? "default" : "default"}
       className={cn("flex gap-3 items-center", !session && "flex-row-reverse")}
     >
       <p>{session ? "Sign Out" : "Sign In"}</p>
