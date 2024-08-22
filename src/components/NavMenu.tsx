@@ -66,12 +66,12 @@ const NavMenu = () => {
               <Logo />
             </Link>
           </div>
-          <ul className="flex items-center space-x-4">
+          <ul className="flex items-center space-x-8">
             {paths.map((path, idx) => (
               <Link
                 key={idx}
                 href={path.href}
-                className="group/link flex flex-col items-center"
+                className="group/link flex flex-col "
               >
                 <li
                   className={cn(
@@ -83,7 +83,8 @@ const NavMenu = () => {
                   <div
                     className={cn(
                       "w-0 bg-accent-foreground h-px  transition-all duration-250",
-                      pathname === path.href && "w-full bg-primary h-[1.5px]",
+                      pathname === path.href &&
+                        "w-full bg-primary h-[1.5px] -mt-[0.5px]",
                       pathname !== path.href && "group-hover/link:w-2/3"
                     )}
                   />
