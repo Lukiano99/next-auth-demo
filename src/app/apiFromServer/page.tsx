@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 
 export default async function APIFromServer() {
-  const resp = await fetch("http:/localhost:3000/api/whoAmI", {
+  const resp = await fetch(`${process.env.NEXTAUTH_URL}/api/whoAmI`, {
     method: "GET",
     headers: new Headers(headers()),
   }).then((res) => res.json());
