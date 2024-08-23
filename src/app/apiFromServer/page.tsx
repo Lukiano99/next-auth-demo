@@ -6,6 +6,9 @@ export default async function APIFromServer() {
     headers: new Headers(headers()),
   }).then((res) => res.json());
 
+  console.log({ resp });
+  console.log(`${process.env.NEXTAUTH_URL}/api/whoAmI`);
+
   return (
     <div className="flex flex-col gap-10">
       <h1 className="text-3xl font-light text-accent-foreground/80">
@@ -13,7 +16,8 @@ export default async function APIFromServer() {
         <span className="font-bold text-4xl text-accent-foreground">
           Server{" "}
         </span>
-        in Next.js
+        in Next.js <br />
+        {`${process.env.NEXTAUTH_URL}/api/whoAmI`}
       </h1>
       <p className="text-accent-foreground/80 w-2/3">
         An API route is created and called from both client and server-side
