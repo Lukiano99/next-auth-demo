@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "@/components/ui/button";
+import { signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 const ApiFromClient = () => {
@@ -12,6 +14,9 @@ const ApiFromClient = () => {
 
   return (
     <div className="flex flex-col gap-10">
+      <Button className="w-fit" onClick={() => signIn()}>
+        Sign In
+      </Button>
       <h1 className="text-3xl font-light text-accent-foreground/80">
         Handling API Requests from{" "}
         <span className="font-bold text-4xl text-accent-foreground">

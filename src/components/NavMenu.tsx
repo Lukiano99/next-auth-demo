@@ -2,14 +2,13 @@
 import Link from "next/link";
 
 import { signIn, signOut, useSession } from "next-auth/react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import MainPage from "./layout/main-page";
 import { Button } from "./ui/button";
 import { ModeToggle } from "./toggle-theme-button";
 import { cn } from "@/lib/utils";
 import Logo from "./logo";
 import { LogInIcon, LogOutIcon, UserCircleIcon } from "lucide-react";
-import Image from "next/image";
 import { GithubImg } from "./github-img";
 
 const paths = [
@@ -39,13 +38,17 @@ const INACTIVE_ROUTE =
   "py-2 px-1 text-accent-foreground/50 hover:text-accent-foreground font-medium transition-all ";
 
 const AuthButton = () => {
+  const router = useRouter();
   const { data: session } = useSession();
-  const onAuthButtonClick = () => (session ? signOut() : signIn());
+  const onAuthButtonClick = () => {
+    // session ? signOut() : signIn()
+    !session ? router.push("/signin") : signOut();
+  };
   return (
     <Button
       onClick={() => onAuthButtonClick()}
-      variant={session ? "default" : "default"}
-      className={cn("flex gap-3 items-center", !session && "flex-row-reverse")}
+      variant={session ? "default" : "link"}
+      className={cn("flex gap-3 items-center ", !session && "flex-row-reverse")}
     >
       <p>{session ? "Sign Out" : "Sign In"}</p>
       {session ? <LogOutIcon size={14} /> : <LogInIcon size={14} />}
