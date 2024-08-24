@@ -14,7 +14,7 @@ import { GithubImg } from "./github-img";
 const paths = [
   {
     label: "home",
-    href: "/",
+    href: "/home",
   },
   {
     label: "protected",
